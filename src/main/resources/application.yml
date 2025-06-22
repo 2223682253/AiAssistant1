@@ -1,0 +1,64 @@
+server:
+  port: 8080
+
+spring:
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://localhost:3306/gpt_2024?allowPublicKeyRetrieval=true&useSSL=false&autoReconnect=true&characterEncoding=utf8
+    username: springuser
+    password: spring123
+
+    #Druid datasource
+    type: com.alibaba.druid.pool.DruidDataSource
+    druid:
+      #初始化大小
+      initial-size: 5
+      #最小连接数
+      min-idle: 10
+      #最大连接数
+      max-active: 20
+      #获取连接时的最大等待时间
+      max-wait: 60000
+      #一个连接在池中最小生存的时间，单位是毫秒
+      min-evictable-idle-time-millis: 300000
+      #多久才进行一次检测需要关闭的空闲连接，单位是毫秒
+      time-between-eviction-runs-millis: 60000
+      #配置扩展插件：stat-监控统计，Log4j-日志，waLL-防火墙（防止SQL注入），去掉后，监控界面的sqL无法统计
+      filters: stat,wall
+      #检测连接是否有效的SQL语句，为空时以下三个配置均无效
+      validation-query: SELECT1
+      #申请连接时执行vaLidatiohQuery检测连接是否有效，默认true，开启后会降低性能
+      test-on-borrow: true
+      #归还连接时执行vaLidationQuery检测连接是否有效，默认faLse，开启后会降低性能
+      test-on-return: true
+      #申请连接时如果空闲时间大于timeBetweenEvictionRunsMiLLis，执行vaLidationQuery检测连接是否有效，默认false，建议开启，不影响性能
+      test-while-idle: true
+      #是否开启StatViewServlet
+      stat-view-servlet:
+        enabled: true
+        #访问监控页面白名单，默认127.0.0.1
+        allow: 127.0.0.1
+        Login-username: admin
+        Login-password: admin
+        #FilterStat
+      filter:
+        stat:
+          #是否开启FilterStat，默认true
+          enabled: true
+          #是否开启慢SQL 记录，默认false
+          log-slow-sql: true
+          #慢SQL的标准，默认3000，单位：毫秒
+          slow-sql-millis: 5000
+          #合并多个连接池的监控亚据，默认false
+          merge-sql: false
+
+
+  jpa:
+    show-sql: true #默认faLse，在日志里显示执行的sql语句
+    database: mysql
+    database-platform: mysql
+    hibernate.ddl-auto: update #指定为update，每次启动项目检测表结构有变化的时候会新增字段，
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.MySQLDialect
+    generate-ddl: false
